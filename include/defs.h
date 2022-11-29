@@ -35,13 +35,13 @@
 
 #define PRE_FLIGHT_GROUND_STATE 0
 #define POWERED_FLIGHT_STATE 1
-#define COASTING_STATE 2
-#define BALLISTIC_DESCENT_STATE 3
-#define CHUTE_DESCENT_STATE 4
-#define POST_FLIGHT_GROUND_STATE 5
+// #define COASTING_STATE 2
+#define BALLISTIC_DESCENT_STATE 2
+#define CHUTE_DESCENT_STATE 3
+#define POST_FLIGHT_GROUND_STATE 4
 
-#define GROUND_STATE_DISPLACEMENT 20
-#define BELOW_APOGEE_LEVEL_DISPLACEMENT 20
+#define GROUND_STATE_DISPLACEMENT 10
+#define BELOW_APOGEE_LEVEL_DISPLACEMENT 10
 
 #define GPS_TX_PIN 17
 #define GPS_RX_PIN 16
@@ -50,11 +50,12 @@ extern const BaseType_t pro_cpu;
 extern const BaseType_t app_cpu;
 
 // network credentials
-#define ssid "Enter ssid"
-#define password "enter password"
+#define ssid "onboard"
+#define password "987654321"
 
 // MQTT Broker IP address
-#define mqtt_server "Enter ip address of computer hosting the MQTT broker"
+#define MQTT_PACKET_SIZE 300
+#define mqtt_server "192.168.0.100"
 #define MQQT_PORT 1883
 
 extern WiFiClient espClient;

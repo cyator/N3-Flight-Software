@@ -4,9 +4,9 @@
 
 void mqttCallback(char *topic, byte *message, unsigned int length)
 {
-  debug("Message arrived on topic: ");
-  debug(topic);
-  debug(". Message: ");
+  Serial.print("Message arrived on topic: ");
+  Serial.print(topic);
+  Serial.print(". Message: ");
   String messageTemp;
 
   for (int i = 0; i < length; i++)
@@ -20,17 +20,17 @@ void mqttCallback(char *topic, byte *message, unsigned int length)
 
   // If a message is received on the topic esp32/output, you check if the message is either "on" or "off".
   // Changes the output state according to the message
-  if (String(topic) == "esp32/ejection")
+  if (String(topic) == "controls/ejection")
   {
     debug("Changing output to ");
     if (messageTemp == "on")
     {
-      debugln("on");
+      Serial.println("on");
       digitalWrite(EJECTION_PIN, HIGH);
     }
     else if (messageTemp == "off")
     {
-      debugln("off");
+      Serial.println("off");
       digitalWrite(EJECTION_PIN, LOW);
     }
   }
@@ -74,6 +74,7 @@ void setup_wifi()
   debugln("IP address: ");
   debugln(WiFi.localIP());
 
+  client.setBufferSize(MQTT_PACKET_SIZE);
   client.setServer(mqtt_server, MQQT_PORT);
   client.setCallback(mqttCallback);
 }
@@ -89,7 +90,7 @@ void reconnect()
     {
       debugln("connected");
       // Subscribe
-      client.subscribe("esp32/ejection");
+      client.subscribe("controls/ejection");
     }
     else
     {
@@ -107,14 +108,14 @@ void sendTelemetryWiFi(Data sv)
 
   // for (int i = 0; i < 5; i++)
   // {
-    // publish whole message i json
-    char mqttMessage[300];
-    sprintf(mqttMessage, "{\"timestamp\":%lld,\"altitude\":%.3f,\"temperature\":%.3f,\"ax\":%.3f,\"ay\":%.3f,\"az\":%.3f,\"gx\":%.3f,\"gy\":%.3f,\"gz\":%.3f,\"filtered_s\":%.3f,\"filtered_v\":%.3f,\"filtered_a\":%.3f,\"state\":%d,\"longitude\":%.8f,\"latitude\":%.8f}", sv.timeStamp, sv.altitude,sv.temperature,sv.ax,sv.ay,sv.az,sv.gx,sv.gy,sv.gz,sv.filtered_s,sv.filtered_v,sv.filtered_a, sv.state, sv.longitude, sv.latitude);
-    client.publish("esp32/message", mqttMessage);
-    // char mqttMessage[200];
-    // sprintf(mqttMessage, "{\"timestamp\":%lld,\"altitude\":%.3f,\"state\":%d,\"longitude\":%.8f,\"latitude\":%.8f}",sv.timeStamp, sv.altitude, sv.state, sv.longitude, sv.latitude);
-    // client.publish("esp32/message", mqttMessage);
-    debugln(mqttMessage);
+  // publish whole message i json
+  char mqttMessage[300];
+  sprintf(mqttMessage, "{\"timestamp\":%lld,\"altitude\":%.3f,\"temperature\":%.3f,\"ax\":%.3f,\"ay\":%.3f,\"az\":%.3f,\"gx\":%.3f,\"gy\":%.3f,\"gz\":%.3f,\"filtered_s\":%.3f,\"filtered_v\":%.3f,\"filtered_a\":%.3f,\"state\":%d,\"longitude\":%.8f,\"latitude\":%.8f}", sv.timeStamp, sv.altitude, sv.temperature, sv.ax, sv.ay, sv.az, sv.gx, sv.gy, sv.gz, sv.filtered_s, sv.filtered_v, sv.filtered_a, sv.state, sv.longitude, sv.latitude);
+  client.publish("esp32/message", mqttMessage);
+  // char mqttMessage[200];
+  // sprintf(mqttMessage, "{\"timestamp\":%lld,\"altitude\":%.3f,\"state\":%d,\"longitude\":%.8f,\"latitude\":%.8f}",sv.timeStamp, sv.altitude, sv.state, sv.longitude, sv.latitude);
+  // client.publish("esp32/message", mqttMessage);
+  debugln(mqttMessage);
   // }
 }
 
