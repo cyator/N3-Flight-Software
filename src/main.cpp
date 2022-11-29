@@ -64,7 +64,7 @@ struct Data readData()
     readings = get_readings();
 
     // TODO: very important to know the orientation of the altimeter
-    filtered_values = kalmanUpdate(readings.altitude, readings.ay-9.8);
+    filtered_values = kalmanUpdate(readings.altitude, readings.ay - 9.8);
 
     // using mutex to modify state
     portENTER_CRITICAL(&mutex);
@@ -235,7 +235,7 @@ void setup()
     pinMode(buzzer_pin, OUTPUT);
 
     setup_wifi();
-    //create_Accesspoint();
+    // create_Accesspoint();
     init_sensors();
 
     initSDCard();
@@ -251,9 +251,9 @@ void setup()
     xTaskCreatePinnedToCore(GetDataTask, "GetDataTask", 3000, NULL, 1, &GetDataTaskHandle, 0);
     xTaskCreatePinnedToCore(WiFiTelemetryTask, "WiFiTelemetryTask", 4000, NULL, 1, &WiFiTelemetryTaskHandle, 0);
     xTaskCreatePinnedToCore(readGPSTask, "ReadGPSTask", 3000, NULL, 1, &GPSTaskHandle, 1);
-    xTaskCreatePinnedToCore(SDWriteTask, "SDWriteTask", 4000, NULL, 1, &SDWriteTaskHandle, 1);
+    //   xTaskCreatePinnedToCore(SDWriteTask, "SDWriteTask", 4000, NULL, 1, &SDWriteTaskHandle, 1);
 
-   vTaskDelete(NULL);
+    vTaskDelete(NULL);
 }
 void loop()
 {

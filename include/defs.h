@@ -31,7 +31,7 @@
 
 // Pin to start ejection charge
 #define EJECTION_PIN 4
-#define buzzer_pin 32
+#define buzzer_pin 2
 
 #define PRE_FLIGHT_GROUND_STATE 0
 #define POWERED_FLIGHT_STATE 1
@@ -50,12 +50,12 @@ extern const BaseType_t pro_cpu;
 extern const BaseType_t app_cpu;
 
 // network credentials
-#define ssid "onboard"
-#define password "987654321"
+#define ssid "S7 edge"
+#define password "almg76061"
 
 // MQTT Broker IP address
 #define MQTT_PACKET_SIZE 300
-#define mqtt_server "192.168.0.100"
+#define mqtt_server "192.168.43.104"
 #define MQQT_PORT 1883
 
 extern WiFiClient espClient;
